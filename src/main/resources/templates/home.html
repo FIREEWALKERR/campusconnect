@@ -1,0 +1,142 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout('CampusConnect', ~{::main})}">
+<main>
+<section class="hero">
+<div>
+<div class="eyebrow">
+<span class="live-dot">
+</span> YOUR CAMPUS. YOUR CAREER. CONNECTED.</div>
+<h1>Big ambitions.<br>
+<span>Brighter futures.</span>
+</h1>
+<p>Discover opportunities, connect with recruiters, and take your first step into a career that matters. Your placement journey, all in one place.</p>
+<div class="d-flex flex-wrap gap-3">
+<a class="btn btn-primary" th:href="@{/register/student}">Start your journey <i class="bi bi-arrow-right ms-2">
+</i>
+</a>
+<a class="btn btn-outline-primary" th:href="@{/register/company}">Hire campus talent</a>
+</div>
+<p class="small">
+<i class="bi bi-shield-check text-primary">
+</i> One secure home for students, recruiters & placement teams</p>
+</div>
+<div class="hero-art" aria-label="Your placement journey">
+<div class="panel">
+<div class="d-flex gap-3 align-items-center">
+<span class="company-icon">
+<i class="bi bi-mortarboard">
+</i>
+</span>
+<div>
+<div class="eyebrow mb-1">THE NEXT CHAPTER</div>
+<h3 class="mb-0">Potential meets opportunity</h3>
+</div>
+</div>
+<div class="mini-bar">
+<span style="width:100%">
+</span>
+</div>
+<div class="d-flex justify-content-between small">
+<span>01 · Build your profile</span>
+<i class="bi bi-check-circle text-primary">
+</i>
+</div>
+<div class="mini-bar">
+<span style="width:100%">
+</span>
+</div>
+<div class="d-flex justify-content-between small">
+<span>02 · Find your fit</span>
+<i class="bi bi-search text-primary">
+</i>
+</div>
+<div class="mini-bar">
+<span style="width:100%">
+</span>
+</div>
+<div class="d-flex justify-content-between small">
+<span>03 · Make your next move</span>
+<i class="bi bi-arrow-up-right text-primary">
+</i>
+</div>
+</div>
+<div class="panel d-flex align-items-center gap-3">
+<span class="company-icon">
+<i class="bi bi-stars">
+</i>
+</span>
+<div>
+<strong>From classroom to career</strong>
+<div class="small text-secondary">A clear path. Every step of the way.</div>
+</div>
+</div>
+</div>
+</section>
+<div class="stats-grid">
+<div class="stat">
+<div class="stat-label">Students registered</div>
+<div class="number" th:text="${studentCount}">
+</div>
+<span class="tag blue">CAMPUS COMMUNITY</span>
+</div>
+<div class="stat">
+<div class="stat-label">Approved recruiters</div>
+<div class="number" th:text="${companyCount}">
+</div>
+<span class="tag violet">INDUSTRY CONNECTIONS</span>
+</div>
+<div class="stat">
+<div class="stat-label">Students with accepted offers</div>
+<div class="number" th:text="${placedCount}">
+</div>
+<span class="tag green">NEW BEGINNINGS</span>
+</div>
+</div>
+<div class="section-title">
+<div>
+<div class="eyebrow">MEET YOUR NEXT OPPORTUNITY</div>
+<h2>Our recruiter community</h2>
+</div>
+</div>
+<div class="recruiters">
+<span th:each="c:${companies}" th:text="${c.name}">
+</span>
+<span th:if="${#lists.isEmpty(companies)}">Your company's next great hire starts here.</span>
+</div>
+<div class="section-title">
+<div>
+<div class="eyebrow">NOW OPEN</div>
+<h2>Find a role that moves you forward</h2>
+</div>
+<a th:href="@{/jobs}">View opportunities →</a>
+</div>
+<div class="job-grid">
+<article class="job-card" th:each="j:${jobs}">
+<div class="company-icon">
+<i class="bi bi-building">
+</i>
+</div>
+<div>
+<p class="small" th:text="${j.company.name}">
+</p>
+<h3 th:text="${j.title}">
+</h3>
+<p class="small" th:text="${j.location}">
+</p>
+</div>
+<div>
+<span class="tag" th:text="${j.employmentType}">
+</span>
+</div>
+<div class="foot">
+<span class="small" th:text="${currency}+' '+${j.salaryMin}+'–'+${j.salaryMax}">
+</span>
+<a th:href="@{/jobs/{id}(id=${j.id})}">Explore ↗</a>
+</div>
+</article>
+</div>
+<div class="panel empty" th:if="${#lists.isEmpty(jobs)}">
+<i class="bi bi-briefcase">
+</i>New opportunities will appear here when approved recruiters publish them.</div>
+</main>
+</html>

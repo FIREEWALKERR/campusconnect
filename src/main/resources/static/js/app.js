@@ -1,0 +1,6 @@
+document.querySelector('.menu-toggle')?.addEventListener('click',function(){const open=document.querySelector('.sidebar').classList.toggle('open');this.setAttribute('aria-expanded',String(open));});
+document.querySelectorAll('.sidebar nav a').forEach(a=>{if(location.pathname===a.pathname||location.pathname.startsWith(a.pathname+'/'))a.classList.add('active');});
+document.querySelectorAll('form[data-confirm]').forEach(f=>f.addEventListener('submit',e=>{if(!confirm(f.dataset.confirm))e.preventDefault();}));
+document.querySelectorAll('form').forEach(f=>f.addEventListener('submit',e=>{if(!e.defaultPrevented&&f.method.toLowerCase()==='post'){const b=e.submitter;if(b){b.setAttribute('aria-busy','true');b.classList.add('opacity-75');}}}));
+document.querySelectorAll('[data-page]').forEach(a=>{const url=new URL(location.href);url.searchParams.set('page',a.dataset.page);a.href=url.pathname+url.search;});
+document.querySelectorAll('[data-export]').forEach(a=>{a.href=a.dataset.export+location.search;});

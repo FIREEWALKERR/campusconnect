@@ -1,0 +1,101 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout('CampusConnect', ~{::main})}">
+<main>
+<div class="page-head">
+<div>
+<div class="eyebrow">CAMPUSCONNECT WORKSPACE</div>
+<h1 th:text="${title}">
+</h1>
+<p th:text="${total}+' records · click a linked name to view details'">
+</p>
+</div>
+<div class="d-flex gap-2">
+<a th:if="${exportUrl}" th:href="${exportUrl}" th:attr="data-export=${exportUrl}" class="btn btn-outline-primary">
+<i class="bi bi-download">
+</i> Export CSV</a>
+<a th:if="${createUrl}" th:href="${createUrl}" class="btn btn-primary">+ Create new</a>
+</div>
+</div>
+<form class="filters" method="get">
+<div>
+<label for="q">Search records</label>
+<input class="form-control" name="q" id="q" th:value="${q}" placeholder="Search by name or keyword">
+</div>
+<div th:if="${statuses != null}">
+<label for="status">Recruitment status</label>
+<select name="status" id="status" class="form-select">
+<option value="">All statuses</option>
+<option th:each="s:${statuses}" th:value="${s}" th:text="${s}" th:selected="${s == selectedStatus}">
+</option>
+</select>
+</div>
+<input th:if="${jobId != null}" type="hidden" name="jobId" th:value="${jobId}">
+<div th:if="${approvalStates != null}">
+<label for="approval">Approval state</label>
+<select name="approval" id="approval" class="form-select">
+<option value="">All companies</option>
+<option th:each="s:${approvalStates}" th:value="${s}" th:text="${s}" th:selected="${s == selectedApproval}">
+</option>
+</select>
+</div>
+<th:block th:if="${studentFilters != null}">
+<div>
+<label for="department">Department</label>
+<select name="department" id="department" class="form-select">
+<option value="">All departments</option>
+<option th:each="d:${departments}" th:value="${d}" th:text="${d}" th:selected="${d == department}">
+</option>
+</select>
+</div>
+<div>
+<label for="batch">Batch</label>
+<input class="form-control" name="batch" id="batch" type="number" th:value="${batch}">
+</div>
+<div>
+<label for="sort">Sort</label>
+<select name="sort" id="sort" class="form-select">
+<option value="name">Name</option>
+<option value="registration" th:selected="${sort == 'registration'}">Registration</option>
+</select>
+</div>
+</th:block>
+<button class="btn btn-primary">Filter</button>
+</form>
+<div class="panel table-panel">
+<div class="table-responsive">
+<table class="table">
+<thead>
+<tr>
+<th th:each="h:${headers}" th:text="${h}">
+</th>
+</tr>
+</thead>
+<tbody>
+<tr th:each="row:${rows}">
+<td th:each="cell,it:${row.cells()}">
+<a th:if="${it.first and row.url() != null}" th:href="${row.url()}" th:text="${cell}">
+</a>
+<span th:unless="${it.first and row.url() != null}" th:text="${cell}">
+</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="empty" th:if="${#lists.isEmpty(rows)}">
+<i class="bi bi-inbox">
+</i>
+<h3>No records found</h3>
+<p>New records will appear here. Try a different search.</p>
+</div>
+</div>
+<div class="pagination-bar">
+<span th:text="'Page '+${pageIndex + 1}+' of '+${pageCount}">
+</span>
+<div class="d-flex gap-2">
+<a class="btn btn-light" th:if="${pageIndex > 0}" th:href="@{''(page=${pageIndex - 1},q=${q})}" th:attr="data-page=${pageIndex - 1}">Previous</a>
+<a class="btn btn-light" th:if="${pageIndex + 1 < pageCount}" th:href="@{''(page=${pageIndex + 1},q=${q})}" th:attr="data-page=${pageIndex + 1}">Next</a>
+</div>
+</div>
+</main>
+</html>

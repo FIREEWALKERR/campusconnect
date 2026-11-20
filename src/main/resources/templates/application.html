@@ -1,0 +1,107 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout('CampusConnect', ~{::main})}">
+<main>
+<div class="page-head">
+<div>
+<div class="eyebrow" th:text="${record.job.company.name}">
+</div>
+<h1 th:text="${record.job.title}">
+</h1>
+<p th:text="'Application #'+${record.id}+' · '+${record.student.user.fullName}">
+</p>
+</div>
+<span class="tag blue" th:text="${record.status}">
+</span>
+</div>
+<div class="grid-2">
+<div>
+<div class="panel">
+<h3>Recruitment journey</h3>
+<div class="timeline mt-4">
+<div class="timeline-item" th:each="h:${history}">
+<strong th:text="${h.status}">
+</strong>
+<p class="small mb-1 text-secondary" th:text="${h.note}">
+</p>
+<small class="text-secondary" th:text="${h.createdAt}+' · '+${h.actor.fullName}">
+</small>
+</div>
+</div>
+</div>
+<div class="panel">
+<h3>Interview rounds</h3>
+<article class="notice" th:each="i:${interviews}">
+<strong th:text="'Round '+${i.roundNumber}+' · '+${i.type}">
+</strong>
+<p class="small mb-1" th:text="${i.scheduledAt}+' UTC · '+${i.status}">
+</p>
+<p th:text="${i.location}">
+</p>
+<p class="prose" th:text="${i.instructions}">
+</p>
+</article>
+<p th:if="${#lists.isEmpty(interviews)}" class="text-secondary mt-3">No interviews scheduled yet.</p>
+</div>
+</div>
+<div>
+<div class="panel">
+<h3>Applicant details</h3>
+<dl class="detail-list mt-3">
+<div>
+<dt>Student</dt>
+<dd th:text="${record.student.user.fullName}">
+</dd>
+</div>
+<div>
+<dt>Department</dt>
+<dd th:text="${record.student.department}">
+</dd>
+</div>
+<div>
+<dt>CGPA</dt>
+<dd th:text="${record.student.cgpa}">
+</dd>
+</div>
+<div>
+<dt>Batch / backlogs</dt>
+<dd th:text="${record.student.graduationYear}+' / '+${record.student.backlogs}">
+</dd>
+</div>
+<div>
+<dt>Email</dt>
+<dd th:text="${record.student.user.email}">
+</dd>
+</div>
+<div>
+<dt>Phone</dt>
+<dd th:text="${record.student.phone}">
+</dd>
+</div>
+</dl>
+<p class="small prose" th:text="${record.student.projects}">
+</p>
+<a class="btn btn-outline-primary" th:if="${record.student.resumeKey != null}" th:href="@{/resumes/{id}(id=${record.student.id})}">Download resume</a>
+</div>
+<div class="panel" th:if="${canManage}">
+<h3>Next steps</h3>
+<form th:if="${!#sets.isEmpty(transitions)}" th:action="@{/applications/{id}/status(id=${record.id})}" method="post">
+<label class="form-label" for="status">Move to</label>
+<select name="status" id="status" class="form-select mb-3">
+<option th:each="s:${transitions}" th:value="${s}" th:text="${s}">
+</option>
+</select>
+<label class="form-label" for="note">Note visible to student</label>
+<textarea class="form-control mb-3" id="note" name="note" maxlength="1000">
+</textarea>
+<button class="btn btn-primary">Update status</button>
+</form>
+<a class="btn btn-outline-primary mt-3" th:if="${record.status.name() == 'SHORTLISTED' or record.status.name() == 'INTERVIEW_SCHEDULED'}" th:href="@{/applications/{id}/interview(id=${record.id})}">Schedule interview</a>
+<a class="btn btn-primary mt-3" th:if="${record.status.name() == 'SELECTED'}" th:href="@{/applications/{id}/offer(id=${record.id})}">Make offer</a>
+</div>
+<form th:if="${!canManage and withdrawable}" method="post" th:action="@{/student/applications/{id}/withdraw(id=${record.id})}" data-confirm="Withdraw this application? This cannot be undone.">
+<button class="btn btn-outline-danger">Withdraw application</button>
+</form>
+</div>
+</div>
+</main>
+</html>

@@ -1,0 +1,126 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout('CampusConnect', ~{::main})}">
+<main>
+<div class="page-head">
+<div>
+<div class="eyebrow">CAMPUSCONNECT WORKSPACE</div>
+<h1 th:text="${title}">
+</h1>
+<p>Date-time entry zone: <span th:text="${timeZone}">
+</span>. Annual salary currency: <span th:text="${currency}">
+</span>.</p>
+</div>
+</div>
+<div class="panel form-panel">
+<form th:action="@{''}" method="post" th:object="${form}">
+<div class="alert alert-danger" th:if="${#fields.hasAnyErrors()}">
+<div th:each="e:${#fields.allErrors()}" th:text="${e}">
+</div>
+</div>
+<div class="form-grid">
+<div>
+<label class="form-label" for="companyId">Company</label>
+<select class="form-select" id="companyId" th:field="*{companyId}">
+<option value="">Select company</option>
+<option th:each="c:${companies}" th:value="${c.id}" th:text="${c.name}">
+</option>
+</select>
+</div>
+<div>
+<label class="form-label" for="driveId">Placement drive (optional)</label>
+<select class="form-select" id="driveId" th:field="*{driveId}">
+<option value="">Independent opening</option>
+<option th:each="d:${drives}" th:value="${d.id}" th:text="${d.name}">
+</option>
+</select>
+</div>
+<div>
+<label class="form-label" for="title">Position title</label>
+<input class="form-control" id="title" th:field="*{title}" type="text" required>
+</div>
+<div>
+<label class="form-label" for="category">Job category</label>
+<input class="form-control" id="category" th:field="*{category}" type="text" required>
+</div>
+<div>
+<label class="form-label" for="location">Work location</label>
+<input class="form-control" id="location" th:field="*{location}" type="text" required>
+</div>
+<div>
+<label class="form-label" for="employmentType">Employment type</label>
+<select class="form-select" id="employmentType" th:field="*{employmentType}">
+<option th:each="t:${employmentTypes}" th:value="${t}" th:text="${t}">
+</option>
+</select>
+</div>
+<div class="span-2">
+<label class="form-label" for="description">Job description</label>
+<textarea class="form-control" id="description" th:field="*{description}">
+</textarea>
+</div>
+<div class="span-2">
+<label class="form-label" for="requiredSkills">Required skills</label>
+<textarea class="form-control" id="requiredSkills" th:field="*{requiredSkills}">
+</textarea>
+</div>
+<div>
+<label class="form-label" for="salaryMin">Minimum annual CTC (<span th:text="${currency}">
+</span>)</label>
+<input class="form-control" id="salaryMin" th:field="*{salaryMin}" type="number" min="0" step="0.01" required>
+</div>
+<div>
+<label class="form-label" for="salaryMax">Maximum annual CTC (<span th:text="${currency}">
+</span>)</label>
+<input class="form-control" id="salaryMax" th:field="*{salaryMax}" type="number" min="0" step="0.01" required>
+</div>
+<div>
+<label class="form-label" for="minimumCgpa">Minimum CGPA / 10</label>
+<input class="form-control" id="minimumCgpa" th:field="*{minimumCgpa}" type="number" min="0" max="10" step="0.01" required>
+</div>
+<div>
+<label class="form-label" for="maximumBacklogs">Maximum active backlogs</label>
+<input class="form-control" id="maximumBacklogs" th:field="*{maximumBacklogs}" type="number" min="0" max="50" required>
+</div>
+<div class="span-2">
+<label class="form-label">Eligible departments</label>
+<div class="d-flex gap-3 flex-wrap">
+<label th:each="d:${departments}">
+<input type="checkbox" th:field="*{departments}" th:value="${d}"> <span th:text="${d}">
+</span>
+</label>
+</div>
+</div>
+<div class="span-2">
+<label class="form-label" for="batches">Eligible graduating batches (separate years with commas)</label>
+<input class="form-control" id="batches" th:field="*{batches}" placeholder="Comma-separated graduating years" required>
+</div>
+<div>
+<label class="form-label" for="opensAt">Applications open (<span th:text="${timeZone}">
+</span>)</label>
+<input class="form-control" id="opensAt" th:field="*{opensAt}" type="datetime-local" required>
+</div>
+<div>
+<label class="form-label" for="deadline">Application deadline (<span th:text="${timeZone}">
+</span>)</label>
+<input class="form-control" id="deadline" th:field="*{deadline}" type="datetime-local" required>
+</div>
+<div>
+<label class="form-label" for="vacancies">Vacancies</label>
+<input class="form-control" id="vacancies" th:field="*{vacancies}" type="number" min="1" max="10000" required>
+</div>
+<div>
+<label class="form-label" for="status">Publication status</label>
+<select class="form-select" id="status" th:field="*{status}">
+<option th:each="s:${jobStatuses}" th:value="${s}" th:text="${s}">
+</option>
+</select>
+</div>
+</div>
+<div class="submit-row d-flex gap-2">
+<button class="btn btn-primary">Save changes</button>
+<a class="btn btn-light" th:href="@{/dashboard}">Back to workspace</a>
+</div>
+</form>
+</div>
+</main>
+</html>

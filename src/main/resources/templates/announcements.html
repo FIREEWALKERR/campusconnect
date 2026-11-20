@@ -1,0 +1,25 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout('CampusConnect', ~{::main})}">
+<main>
+<div class="page-head">
+<div>
+<div class="eyebrow">FROM YOUR PLACEMENT TEAM</div>
+<h1>Campus announcements</h1>
+<p>Important news, deadlines and placement guidance.</p>
+</div>
+<a class="btn btn-primary" th:if="${staff}" th:href="@{/staff/announcements}">Manage announcements</a>
+</div>
+<article class="panel" th:each="a:${announcements}">
+<span class="tag violet mb-3">CAMPUS UPDATE</span>
+<h2 th:text="${a.title}">
+</h2>
+<p class="small text-secondary" th:text="${a.publishedAt}+' · '+${a.author.fullName}">
+</p>
+<p class="prose" th:text="${a.body}">
+</p>
+</article>
+<div class="panel empty" th:if="${#lists.isEmpty(announcements)}">
+<i class="bi bi-megaphone">
+</i>No published announcements yet.</div>
+</main>
+</html>

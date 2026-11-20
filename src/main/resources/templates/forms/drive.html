@@ -1,0 +1,53 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout('CampusConnect', ~{::main})}">
+<main>
+<div class="page-head">
+<div>
+<div class="eyebrow">CAMPUSCONNECT WORKSPACE</div>
+<h1 th:text="${title}">
+</h1>
+<p>Date-time entry zone: <span th:text="${timeZone}">
+</span>. Annual salary currency: <span th:text="${currency}">
+</span>.</p>
+</div>
+</div>
+<div class="panel form-panel">
+<form th:action="@{''}" method="post" th:object="${form}">
+<div class="alert alert-danger" th:if="${#fields.hasAnyErrors()}">
+<div th:each="e:${#fields.allErrors()}" th:text="${e}">
+</div>
+</div>
+<div class="form-grid">
+<div>
+<label class="form-label" for="name">Drive name</label>
+<input class="form-control" id="name" th:field="*{name}" type="text" required>
+</div>
+<div>
+<label class="form-label" for="academicYear">Academic year (YYYY-YYYY)</label>
+<input class="form-control" id="academicYear" th:field="*{academicYear}" type="text" required pattern="[0-9]{4}-[0-9]{4}">
+</div>
+<div>
+<label class="form-label" for="batch">Graduating batch</label>
+<input class="form-control" id="batch" th:field="*{batch}" type="number" min="1" max="9999" required>
+</div>
+<div>
+<label class="form-label" for="venue">Venue</label>
+<input class="form-control" id="venue" th:field="*{venue}" type="text" required>
+</div>
+<div>
+<label class="form-label" for="startDate">Start date</label>
+<input class="form-control" id="startDate" th:field="*{startDate}" type="date" required>
+</div>
+<div>
+<label class="form-label" for="endDate">End date</label>
+<input class="form-control" id="endDate" th:field="*{endDate}" type="date" required>
+</div>
+</div>
+<div class="submit-row d-flex gap-2">
+<button class="btn btn-primary">Save changes</button>
+<a class="btn btn-light" th:href="@{/dashboard}">Back to workspace</a>
+</div>
+</form>
+</div>
+</main>
+</html>

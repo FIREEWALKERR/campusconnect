@@ -1,0 +1,29 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout('CampusConnect', ~{::main})}">
+<main>
+<div class="page-head">
+<div>
+<div class="eyebrow">STAY IN THE LOOP</div>
+<h1>Notifications</h1>
+<p>Your personal placement updates.</p>
+</div>
+</div>
+<div class="panel">
+<article class="notice d-flex justify-content-between gap-3" th:each="n:${notifications}">
+<div>
+<span class="tag blue mb-2" th:unless="${n.readFlag}">UNREAD</span>
+<p class="mb-1" th:text="${n.message}">
+</p>
+<time th:text="${n.createdAt}">
+</time>
+</div>
+<form th:unless="${n.readFlag}" th:action="@{/notifications/{id}/read(id=${n.id})}" method="post">
+<button class="btn btn-sm btn-light">Mark read</button>
+</form>
+</article>
+<div class="empty" th:if="${#lists.isEmpty(notifications)}">
+<i class="bi bi-bell">
+</i>You're all caught up.</div>
+</div>
+</main>
+</html>

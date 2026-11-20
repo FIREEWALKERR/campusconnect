@@ -1,0 +1,74 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout('CampusConnect', ~{::main})}">
+<main>
+<div class="page-head">
+<div>
+<div class="eyebrow">YOUR PLACEMENT WORKSPACE</div>
+<h1>Overview</h1>
+<p>Stay connected to what comes next.</p>
+</div>
+<a class="btn btn-primary" th:href="@{/jobs}">Explore opportunities →</a>
+</div>
+<section class="welcome">
+<div class="eyebrow">LET'S MOVE FORWARD</div>
+<h2 th:text="'Welcome back, '+${me.fullName}+'.'">
+</h2>
+<p>Keep track of applications, prepare for interviews and make your next move with confidence.</p>
+</section>
+<div class="stats-grid">
+<div class="stat" th:each="s:${stats}">
+<span class="stat-icon">
+<i class="bi bi-graph-up-arrow">
+</i>
+</span>
+<div class="stat-label" th:text="${s.key}">
+</div>
+<div class="number" th:text="${s.value}">
+</div>
+<span class="small text-secondary">From current database records</span>
+</div>
+</div>
+<div class="grid-2">
+<div class="panel">
+<div class="d-flex justify-content-between">
+<h3>Campus updates</h3>
+<a class="small" th:href="@{/announcements}">View all →</a>
+</div>
+<article class="notice" th:each="a:${announcements}">
+<h3 th:text="${a.title}">
+</h3>
+<p class="small text-secondary" th:text="${a.body}">
+</p>
+<time th:text="${a.publishedAt}">
+</time>
+</article>
+<div class="empty" th:if="${#lists.isEmpty(announcements)}">No announcements yet.</div>
+</div>
+<div>
+<div class="panel" th:if="${profile != null}">
+<div class="eyebrow">MAKE A STRONG FIRST IMPRESSION</div>
+<h3>Your profile, your story</h3>
+<p class="small text-secondary">Complete your academic details, skills and resume so recruiters can get to know you.</p>
+<div class="d-flex justify-content-between small mb-2">
+<span>Profile completion</span>
+<strong th:text="${profile.completion}+'%'">
+</strong>
+</div>
+<div class="progress mb-4">
+<div class="progress-bar" th:style="'width:'+${profile.completion}+'%'">
+</div>
+</div>
+<a class="btn btn-outline-primary" th:href="@{/student/profile}">Update profile</a>
+</div>
+<div class="panel">
+<h3>Keep your next step in sight</h3>
+<p class="small text-secondary">Review your recruitment progress and upcoming interview details.</p>
+<a th:href="@{/applications}">Track applications →</a>
+<hr>
+<a th:href="@{/interviews}">Check interview schedule →</a>
+</div>
+</div>
+</div>
+<p class="small text-secondary" th:if="${staff}">Placement percentage counts distinct students with an accepted offer among active students with complete core academic fields. See Reports for the exact cohort definition.</p>
+</main>
+</html>

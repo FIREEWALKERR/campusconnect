@@ -1,0 +1,102 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout('CampusConnect', ~{::main})}">
+<main>
+<div class="page-head">
+<div>
+<div class="eyebrow">TURN PROGRESS INTO INSIGHT</div>
+<h1>Placement analytics</h1>
+<p>Live records. Clear outcomes. No duplicate student counts.</p>
+</div>
+<a class="btn btn-outline-primary" th:href="@{/staff/reports/export(batch=${batch},companyId=${companyId},academicYear=${academicYear})}">Export CSV ↓</a>
+</div>
+<form class="filters" method="get" th:action="@{/staff/reports}">
+<div>
+<label for="batch">Graduating batch</label>
+<input class="form-control" type="number" id="batch" name="batch" th:value="${batch}" placeholder="All batches">
+</div>
+<div>
+<label for="companyId">Company</label>
+<select class="form-select" id="companyId" name="companyId">
+<option value="">All companies</option>
+<option th:each="c:${companies}" th:value="${c.id}" th:text="${c.name}" th:selected="${c.id == companyId}">
+</option>
+</select>
+</div>
+<div>
+<label for="academicYear">Drive academic year</label>
+<input class="form-control" id="academicYear" name="academicYear" th:value="${academicYear}" placeholder="YYYY-YYYY">
+</div>
+<button class="btn btn-primary">Apply filters</button>
+</form>
+<div class="panel">
+<h3>Department placement rate</h3>
+<div class="salary-bars">
+<div th:each="r:${rows}">
+<div class="bar" th:style="'height:'+${#strings.replace(r.cells()[3],'%','')}+'px'">
+</div>
+<strong th:text="${r.cells()[3]}">
+</strong>
+<div th:text="${r.cells()[0]}">
+</div>
+</div>
+</div>
+</div>
+<div class="panel table-panel">
+<div class="table-responsive">
+<table class="table">
+<thead>
+<tr>
+<th th:each="h:${headers}" th:text="${h}">
+</th>
+</tr>
+</thead>
+<tbody>
+<tr th:each="r:${rows}">
+<td th:each="c:${r.cells()}" th:text="${c}">
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="panel">
+<h3>How we measure placement</h3>
+<p class="small text-secondary">Eligible cohort = enabled student accounts with department, graduation year, CGPA and backlog count completed, optionally filtered by graduation batch. This is reporting eligibility, not eligibility for every job. Placed = distinct students in that cohort with an accepted offer matching the selected company and drive academic year. Percentage = placed ÷ eligible × 100; an empty cohort returns 0%. Company and academic-year filters restrict outcomes, not the cohort denominator. Salary summaries include all issued offers in the filtered set; no offers is shown as 0.</p>
+</div>
+<div class="panel">
+<h3>Offered salary distribution</h3>
+<p class="small text-secondary">Annual CTC in <span th:text="${currency}">
+</span> · all issued offers matching the selected filters</p>
+<div class="salary-bars">
+<div th:each="r:${distribution}">
+<div class="bar" th:style="'height:'+${r.cells()[2]}+'px'">
+</div>
+<strong th:text="${r.cells()[1]}+' offers'">
+</strong>
+<div th:text="${r.cells()[0]}">
+</div>
+</div>
+</div>
+<h3 class="mb-3">Company recruitment · all time</h3>
+<div class="panel table-panel">
+<div class="table-responsive">
+<table class="table">
+<thead>
+<tr>
+<th>Company</th>
+<th>Applications</th>
+<th>Offers</th>
+<th>Distinct accepted students</th>
+</tr>
+</thead>
+<tbody>
+<tr th:each="r:${companyRows}">
+<td th:each="c:${r.cells()}" th:text="${c}">
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+</html>

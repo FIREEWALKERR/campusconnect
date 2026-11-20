@@ -1,0 +1,14 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout('CampusConnect', ~{::main})}">
+<main>
+<div class="panel empty">
+<i class="bi bi-exclamation-circle">
+</i>
+<h1>We could not complete that request</h1>
+<p th:text="${message ?: 'Please check the address or try again. If the issue persists, contact your placement office.'}">
+</p>
+<a class="btn btn-primary" th:href="@{/dashboard}">Return to workspace</a>
+<a class="btn btn-light ms-2" th:href="@{/}">Home</a>
+</div>
+</main>
+</html>

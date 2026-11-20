@@ -1,0 +1,26 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout('CampusConnect', ~{::main})}">
+<main>
+<div class="welcome">
+<div class="eyebrow">CONNECTING CAMPUS & CAREERS</div>
+<h1>Every student deserves a clear path forward.</h1>
+<p>CampusConnect brings students, recruiters and college placement teams together in a transparent recruitment process.</p>
+</div>
+<div class="grid-2">
+<div class="panel">
+<h2>How it works</h2>
+<p>Students build academic profiles and discover eligible openings. Approved recruiters publish opportunities and manage interviews. Placement teams coordinate drives, review progress and measure outcomes using live records.</p>
+<a class="btn btn-primary" th:href="@{/register/student}">Join as a student</a>
+</div>
+<div class="panel">
+<h3>Need help?</h3>
+<p>Contact your college placement office for account access, company approval, interview changes or corrections to academic records. </p>
+<p th:if="${!#strings.isEmpty(contactEmail)}">
+<a th:href="'mailto:'+${contactEmail}" th:text="${contactEmail}">
+</a>
+</p>
+<a th:href="@{/announcements}">Read campus announcements →</a>
+</div>
+</div>
+</main>
+</html>

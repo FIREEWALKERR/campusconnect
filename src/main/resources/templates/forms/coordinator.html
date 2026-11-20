@@ -1,0 +1,10 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout('CampusConnect', ~{::main})}">
+<main><div class="page-head"><div><div class="eyebrow">ADMINISTRATION</div><h1 th:text="${title}"></h1></div></div>
+<div class="panel form-panel"><form th:action="@{/admin/coordinators/new}" method="post" th:object="${form}">
+<div class="alert alert-danger" th:if="${#fields.hasAnyErrors()}"><div th:each="e:${#fields.allErrors()}" th:text="${e}"></div></div>
+<div class="form-grid">
+<div><label class="form-label" for="fullName">Full name</label><input class="form-control" th:field="*{fullName}" required maxlength="100"></div>
+<div><label class="form-label" for="email">Email</label><input class="form-control" type="email" th:field="*{email}" required maxlength="190"></div>
+<div><label class="form-label" for="password">Initial password (12–64 characters)</label><input class="form-control" id="password" name="password" type="password" autocomplete="new-password" minlength="12" maxlength="64" required></div>
+</div><div class="submit-row"><button class="btn btn-primary">Create coordinator</button></div></form></div></main></html>

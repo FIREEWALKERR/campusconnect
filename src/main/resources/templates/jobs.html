@@ -1,0 +1,100 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout('CampusConnect', ~{::main})}">
+<main>
+<div class="page-head">
+<div>
+<div class="eyebrow">DISCOVER YOUR NEXT CHAPTER</div>
+<h1>Opportunities</h1>
+<p>Find the right fit for your skills and ambitions.</p>
+</div>
+<a class="btn btn-primary" th:if="${manager}" th:href="@{/manage/jobs/new}">+ Create opening</a>
+</div>
+<form class="filters" th:action="@{/jobs}" method="get">
+<div>
+<label for="q">Company or position</label>
+<input class="form-control" id="q" name="q" th:value="${q}" placeholder="Search opportunities">
+</div>
+<div>
+<label for="location">Location</label>
+<input class="form-control" id="location" name="location" th:value="${location}" placeholder="City or remote">
+</div>
+<div>
+<label for="salary">Minimum annual CTC (<span th:text="${currency}">
+</span>)</label>
+<input class="form-control" type="number" id="salary" name="salary" min="0" th:value="${salary}">
+</div>
+<div>
+<label for="department">Department</label>
+<select class="form-select" id="department" name="department">
+<option value="">All departments</option>
+<option th:each="d:${departments}" th:value="${d}" th:text="${d}" th:selected="${d == department}">
+</option>
+</select>
+</div>
+<div>
+<label for="sort">Sort by</label>
+<select class="form-select" id="sort" name="sort">
+<option value="deadline" th:selected="${sort == 'deadline'}">Deadline</option>
+<option value="title" th:selected="${sort == 'title'}">Position</option>
+<option value="salaryMax" th:selected="${sort == 'salaryMax'}">Salary</option>
+</select>
+</div>
+<label th:if="${me.role.name() == 'STUDENT'}">
+<input type="checkbox" name="eligibleOnly" value="true" th:checked="${eligibleOnly}"> Eligible only</label>
+<button class="btn btn-primary">Search</button>
+<a th:href="@{/jobs}" class="btn btn-light">Reset</a>
+</form>
+<div class="job-grid">
+<article class="job-card" th:each="j:${jobs}">
+<div class="d-flex justify-content-between">
+<div class="company-icon">
+<i class="bi bi-building">
+</i>
+</div>
+<span class="tag align-self-start" th:text="${j.status}">
+</span>
+</div>
+<div>
+<p class="small" th:text="${j.company.name}">
+</p>
+<h3>
+<a th:href="@{/jobs/{id}(id=${j.id})}" th:text="${j.title}">
+</a>
+</h3>
+<p class="small">
+<i class="bi bi-geo-alt">
+</i> <span th:text="${j.location}">
+</span>
+</p>
+</div>
+<div class="d-flex flex-wrap gap-2">
+<span class="tag blue" th:text="${j.employmentType}">
+</span>
+<span class="tag violet" th:text="'CGPA '+${j.minimumCgpa}+'+'">
+</span>
+</div>
+<strong class="small" th:text="${currency}+' '+${j.salaryMin}+' – '+${j.salaryMax}+' / year'">
+</strong>
+<div class="foot">
+<span class="small text-secondary" th:text="${j.vacancies}+' openings'">
+</span>
+<a th:href="@{/jobs/{id}(id=${j.id})}">View role ↗</a>
+</div>
+</article>
+</div>
+<div class="panel empty" th:if="${#lists.isEmpty(jobs)}">
+<i class="bi bi-search">
+</i>
+<h3>No matching opportunities</h3>
+<p>Try changing your filters or check back for new openings.</p>
+</div>
+<div class="pagination-bar">
+<span th:text="${page.totalElements}+' opportunities'">
+</span>
+<div class="d-flex gap-2">
+<a class="btn btn-light" th:if="${page.hasPrevious()}" th:href="@{/jobs(page=${page.number - 1},q=${q},location=${location},salary=${salary},department=${department},eligibleOnly=${eligibleOnly},sort=${sort})}">Previous</a>
+<a class="btn btn-light" th:if="${page.hasNext()}" th:href="@{/jobs(page=${page.number + 1},q=${q},location=${location},salary=${salary},department=${department},eligibleOnly=${eligibleOnly},sort=${sort})}">Next</a>
+</div>
+</div>
+</main>
+</html>

@@ -1,0 +1,95 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout('CampusConnect', ~{::main})}">
+<main>
+<div class="page-head">
+<div>
+<div class="eyebrow" th:text="${job.company.name}">
+</div>
+<h1 th:text="${job.title}">
+</h1>
+<p>
+<i class="bi bi-geo-alt">
+</i> <span th:text="${job.location}">
+</span> · <span th:text="${job.employmentType}">
+</span>
+</p>
+</div>
+<a class="btn btn-outline-primary" th:href="@{/jobs}">All opportunities</a>
+</div>
+<div class="grid-2">
+<div class="panel">
+<h3>About the opportunity</h3>
+<p class="prose" th:text="${job.description}">
+</p>
+<h3 class="mt-4">Skills you'll bring</h3>
+<p class="prose" th:text="${job.requiredSkills}">
+</p>
+<h3 class="mt-4">Eligibility criteria</h3>
+<dl class="detail-list mt-3">
+<div>
+<dt>Minimum CGPA</dt>
+<dd th:text="${job.minimumCgpa}">
+</dd>
+</div>
+<div>
+<dt>Maximum active backlogs</dt>
+<dd th:text="${job.maximumBacklogs}">
+</dd>
+</div>
+<div>
+<dt>Departments</dt>
+<dd th:text="${job.departments}">
+</dd>
+</div>
+<div>
+<dt>Graduating batches</dt>
+<dd th:text="${job.batches}">
+</dd>
+</div>
+</dl>
+</div>
+<div>
+<div class="panel">
+<span class="tag green" th:text="${job.status}">
+</span>
+<h2 class="mt-3" th:text="${currency}+' '+${job.salaryMin}+' – '+${job.salaryMax}">
+</h2>
+<p class="small text-secondary">Annual CTC · <span th:text="${job.vacancies}">
+</span> vacancies</p>
+<hr>
+<p class="small">
+<strong>Applications open (UTC)</strong>
+<br>
+<span th:text="${job.opensAt}">
+</span>
+</p>
+<p class="small">
+<strong>Deadline (UTC)</strong>
+<br>
+<span th:text="${job.deadline}">
+</span>
+</p>
+<div th:if="${me.role.name() == 'STUDENT'}">
+<form th:if="${#lists.isEmpty(reasons)}" method="post" th:action="@{/student/jobs/{id}/apply(id=${job.id})}">
+<button class="btn btn-primary w-100">Apply for this role →</button>
+</form>
+<div th:unless="${#lists.isEmpty(reasons)}" class="alert alert-warning">
+<strong>You cannot apply yet</strong>
+<ul class="mb-0 mt-2">
+<li th:each="reason:${reasons}" th:text="${reason}">
+</li>
+</ul>
+</div>
+</div>
+<div th:if="${manager}" class="d-grid gap-2">
+<a class="btn btn-primary" th:href="@{/manage/jobs/{id}/edit(id=${job.id})}">Edit opening</a>
+<a class="btn btn-outline-primary" th:href="@{/applications(jobId=${job.id})}">View applicants</a>
+<form th:if="${job.status.name() == 'DRAFT'}" th:action="@{/manage/jobs/{id}/delete(id=${job.id})}" method="post" data-confirm="Delete this unused draft job?">
+<button class="btn btn-outline-danger w-100">Delete draft</button>
+</form>
+</div>
+</div>
+</div>
+</div>
+</main>
+</html>

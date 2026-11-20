@@ -1,0 +1,37 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout('CampusConnect', ~{::main})}">
+<main>
+<div class="auth-wrap">
+<section class="auth-art">
+<div class="orb">
+<i class="bi bi-mortarboard">
+</i>
+</div>
+<div class="eyebrow text-white">WELCOME TO CAMPUSCONNECT</div>
+<h1>Your future<br>is taking shape.</h1>
+<p>One connected placement experience. Sign in to pick up where you left off.</p>
+</section>
+<section class="auth-form">
+<h2>Welcome back</h2>
+<p class="text-secondary mb-4">Sign in to your placement workspace.</p>
+<div class="alert alert-danger" th:if="${param.error}">Email or password is incorrect, or your account is disabled.</div>
+<div class="alert alert-success" th:if="${param.registered}">Account created. Sign in to complete your profile. Company accounts require administrator approval before publishing jobs.</div>
+<div class="alert alert-info" th:if="${param.logout}">You have been signed out.</div>
+<form method="post" th:action="@{/login}">
+<label for="username" class="form-label">Email address</label>
+<input id="username" name="username" type="email" class="form-control" autocomplete="username" placeholder="you@college.edu" required>
+<label for="password" class="form-label">Password</label>
+<input id="password" name="password" type="password" class="form-control" autocomplete="current-password" required>
+<button class="btn btn-primary w-100 mt-2">Sign in <i class="bi bi-arrow-right ms-2">
+</i>
+</button>
+</form>
+<p class="small text-secondary mt-4">New here? <a th:href="@{/register/student}">Create a student account</a>
+</p>
+<p class="small">
+<a th:href="@{/register/company}">Register as a recruiter ↗</a>
+</p>
+</section>
+</div>
+</main>
+</html>

@@ -1,0 +1,85 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout('CampusConnect', ~{::main})}">
+<main>
+<div class="page-head">
+<div>
+<div class="eyebrow">CAMPUSCONNECT WORKSPACE</div>
+<h1 th:text="${title}">
+</h1>
+<p>Date-time entry zone: <span th:text="${timeZone}">
+</span>. Annual salary currency: <span th:text="${currency}">
+</span>.</p>
+</div>
+</div>
+<div class="panel form-panel">
+<form th:action="@{''}" method="post" th:object="${form}">
+<div class="alert alert-danger" th:if="${#fields.hasAnyErrors()}">
+<div th:each="e:${#fields.allErrors()}" th:text="${e}">
+</div>
+</div>
+<div class="form-grid">
+<div>
+<label class="form-label" for="fullName">Full name</label>
+<input class="form-control" id="fullName" th:field="*{fullName}" type="text" required maxlength="100">
+</div>
+<div>
+<label class="form-label" for="phone">Phone</label>
+<input class="form-control" id="phone" th:field="*{phone}" type="tel" required>
+</div>
+<div>
+<label class="form-label" for="department">Department</label>
+<select class="form-select" id="department" th:field="*{department}">
+<option value="">Select department</option>
+<option th:each="d:${departments}" th:value="${d}" th:text="${d}">
+</option>
+</select>
+</div>
+<div>
+<label class="form-label" for="degree">Degree (e.g. B.Tech)</label>
+<input class="form-control" id="degree" th:field="*{degree}" type="text" required>
+</div>
+<div>
+<label class="form-label" for="graduationYear">Graduating batch</label>
+<input class="form-control" id="graduationYear" th:field="*{graduationYear}" type="number" min="1" max="9999" required>
+</div>
+<div>
+<label class="form-label" for="cgpa">Current CGPA / 10</label>
+<input class="form-control" id="cgpa" th:field="*{cgpa}" type="number" min="0" max="10" step="0.01" required>
+</div>
+<div>
+<label class="form-label" for="backlogs">Active backlogs</label>
+<input class="form-control" id="backlogs" th:field="*{backlogs}" type="number" min="0" max="50" required>
+</div>
+<div>
+<label class="form-label" for="skills">Skills (separate with commas)</label>
+<input class="form-control" id="skills" th:field="*{skills}" type="text" >
+</div>
+<div class="span-2">
+<label class="form-label" for="academicHistory">Education / academic history</label>
+<textarea class="form-control" id="academicHistory" th:field="*{academicHistory}">
+</textarea>
+</div>
+<div class="span-2">
+<label class="form-label" for="projects">Projects</label>
+<textarea class="form-control" id="projects" th:field="*{projects}">
+</textarea>
+</div>
+<div class="span-2">
+<label class="form-label" for="certifications">Certifications</label>
+<textarea class="form-control" id="certifications" th:field="*{certifications}">
+</textarea>
+</div>
+<div class="span-2">
+<label class="form-label" for="achievements">Achievements</label>
+<textarea class="form-control" id="achievements" th:field="*{achievements}">
+</textarea>
+</div>
+</div>
+<div class="submit-row d-flex gap-2">
+<button class="btn btn-primary">Save changes</button>
+<a class="btn btn-light" th:href="@{/dashboard}">Back to workspace</a>
+</div>
+</form>
+</div>
+</main>
+</html>

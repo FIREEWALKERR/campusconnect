@@ -1,0 +1,105 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout('CampusConnect', ~{::main})}">
+<main>
+<div class="page-head">
+<div>
+<div class="eyebrow">STUDENT PROFILE</div>
+<h1 th:text="${profile.user.fullName}">
+</h1>
+<p th:text="${profile.registrationNumber}+' · '+${profile.user.email}">
+</p>
+</div>
+<a class="btn btn-primary" th:href="${me.role.name() == 'ADMIN'} ? @{/admin/students/{id}/edit(id=${profile.id})} : @{/student/profile/edit}">Edit profile</a>
+</div>
+<div class="grid-2">
+<div>
+<div class="panel">
+<h3>Academic & personal information</h3>
+<dl class="detail-list mt-4">
+<div>
+<dt>Department</dt>
+<dd th:text="${profile.department}">
+</dd>
+</div>
+<div>
+<dt>Degree</dt>
+<dd th:text="${profile.degree}">
+</dd>
+</div>
+<div>
+<dt>Graduation year</dt>
+<dd th:text="${profile.graduationYear}">
+</dd>
+</div>
+<div>
+<dt>Current CGPA</dt>
+<dd th:text="${profile.cgpa}">
+</dd>
+</div>
+<div>
+<dt>Active backlogs</dt>
+<dd th:text="${profile.backlogs}">
+</dd>
+</div>
+<div>
+<dt>Phone</dt>
+<dd th:text="${profile.phone}">
+</dd>
+</div>
+</dl>
+<h3>Skills</h3>
+<div class="d-flex gap-2 flex-wrap">
+<span class="tag blue" th:each="s:${profile.skills}" th:text="${s.name}">
+</span>
+</div>
+</div>
+<div class="panel">
+<h3>Education history</h3>
+<p class="prose" th:text="${profile.academicHistory}">
+</p>
+<h3>Projects</h3>
+<p class="prose" th:text="${profile.projects}">
+</p>
+<h3>Certifications</h3>
+<p class="prose" th:text="${profile.certifications}">
+</p>
+<h3>Achievements</h3>
+<p class="prose" th:text="${profile.achievements}">
+</p>
+</div>
+</div>
+<div>
+<div class="panel">
+<h3>Profile completion</h3>
+<div class="number h2" th:text="${profile.completion}+'%'">
+</div>
+<div class="progress">
+<div class="progress-bar" th:style="'width:'+${profile.completion}+'%'">
+</div>
+</div>
+</div>
+<div class="panel">
+<h3>Your resume</h3>
+<p class="small text-secondary">PDF or DOCX · maximum <span th:text="${resumeLimit}">
+</span>. Downloads are restricted to you and authorized placement staff or recruiters reviewing your applications.</p>
+<a th:if="${profile.resumeKey != null}" class="btn btn-outline-primary mb-3" th:href="@{/resumes/{id}(id=${profile.id})}">Download resume</a>
+<form th:if="${me.role.name() == 'STUDENT'}" th:action="@{/student/resume}" method="post" enctype="multipart/form-data">
+<label class="form-label" for="resume">Upload or replace resume</label>
+<input id="resume" class="form-control mb-3" name="file" type="file" accept=".pdf,.docx" required>
+<button class="btn btn-primary">Upload securely</button>
+</form>
+</div>
+<div th:if="${me.role.name() == 'ADMIN'}" class="panel">
+<h3>Account access</h3>
+<p th:text="${profile.user.enabled} ? 'Active account' : 'Disabled account'">
+</p>
+<form method="post" th:action="@{/admin/users/{id}/enabled(id=${profile.user.id})}" data-confirm="Change this student's account access?">
+<input type="hidden" name="enabled" th:value="${!profile.user.enabled}">
+<button class="btn btn-outline-danger" th:text="${profile.user.enabled} ? 'Disable account' : 'Enable account'">
+</button>
+</form>
+</div>
+</div>
+</div>
+</main>
+</html>

@@ -1,0 +1,42 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout('CampusConnect', ~{::main})}">
+<main>
+<div class="page-head">
+<div>
+<div class="eyebrow">RECRUITER REVIEW</div>
+<h1 th:text="${company.name}">
+</h1>
+<p th:text="${company.user.email}">
+</p>
+</div>
+<a class="btn btn-light" th:href="@{/admin/companies}">All companies</a>
+</div>
+<div class="panel">
+<span class="tag blue" th:text="${company.approval}">
+</span>
+<p class="prose mt-4" th:text="${company.description}">
+</p>
+<dl class="detail-list">
+<div>
+<dt>Location</dt>
+<dd th:text="${company.location}">
+</dd>
+</div>
+<div>
+<dt>Website</dt>
+<dd th:text="${company.website}">
+</dd>
+</div>
+</dl>
+<form class="d-flex gap-2" th:action="@{/admin/companies/{id}/approval(id=${company.id})}" method="post">
+<label class="visually-hidden" for="approval">Approval</label>
+<select class="form-select w-auto" name="approval" id="approval">
+<option value="APPROVED">Approve company</option>
+<option value="REJECTED">Reject company</option>
+<option value="PENDING">Return to pending</option>
+</select>
+<button class="btn btn-primary">Update approval</button>
+</form>
+</div>
+</main>
+</html>

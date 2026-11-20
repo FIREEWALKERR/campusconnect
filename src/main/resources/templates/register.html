@@ -1,0 +1,39 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout('CampusConnect', ~{::main})}">
+<main>
+<div class="auth-wrap">
+<section class="auth-art">
+<div class="orb">
+<i class="bi bi-stars">
+</i>
+</div>
+<h1>Start something<br>extraordinary.</h1>
+<p>Connect your ambitions with the right opportunities. Join the CampusConnect community.</p>
+</section>
+<section class="auth-form">
+<div class="eyebrow" th:text="${kind}+' registration'">
+</div>
+<h2>Create your account</h2>
+<p class="text-secondary">A few details to get you started.</p>
+<form method="post" th:action="@{/register/{kind}(kind=${kind})}" th:object="${form}">
+<div class="alert alert-danger" th:if="${#fields.hasAnyErrors()}">
+<div th:each="e:${#fields.allErrors()}" th:text="${e}">
+</div>
+</div>
+<label class="form-label" for="fullName">Full name / contact person</label>
+<input class="form-control" th:field="*{fullName}" required maxlength="100">
+<label class="form-label" for="email">Email</label>
+<input class="form-control" type="email" th:field="*{email}" required maxlength="190">
+<label class="form-label" for="identifier" th:text="${kind == 'student'} ? 'Student registration number' : 'Company name'">
+</label>
+<input class="form-control" th:field="*{identifier}" required maxlength="100">
+<label class="form-label" for="password">Password (12–64 characters)</label>
+<input class="form-control" type="password" th:field="*{password}" autocomplete="new-password" minlength="12" maxlength="64" required>
+<button class="btn btn-primary w-100">Create account →</button>
+</form>
+<p class="small text-secondary mt-4">Already registered? <a th:href="@{/login}">Sign in</a>
+</p>
+</section>
+</div>
+</main>
+</html>

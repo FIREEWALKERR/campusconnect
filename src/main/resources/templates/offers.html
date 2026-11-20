@@ -1,0 +1,44 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout('CampusConnect', ~{::main})}">
+<main>
+<div class="page-head">
+<div>
+<div class="eyebrow">THE NEXT CHAPTER</div>
+<h1>Placement offers</h1>
+<p>Review terms and respond before the acceptance deadline.</p>
+</div>
+</div>
+<div class="job-grid">
+<article class="job-card" th:each="o:${offers}">
+<span class="tag green align-self-start" th:text="${o.status}">
+</span>
+<p class="small" th:text="${o.application.job.company.name}">
+</p>
+<h3 th:text="${o.application.job.title}">
+</h3>
+<p th:text="${o.application.student.user.fullName}">
+</p>
+<h2 th:text="${currency}+' '+${o.salary}">
+</h2>
+<p class="small">Annual CTC</p>
+<p class="small" th:text="'Issued: '+${o.offerDate}+' UTC'">
+</p>
+<p class="small" th:text="'Respond by: '+${o.acceptanceDeadline}+' UTC'">
+</p>
+<p class="small" th:if="${o.respondedAt != null}" th:text="'Responded: '+${o.respondedAt}">
+</p>
+<form th:if="${me.role.name() == 'STUDENT' and o.status.name() == 'PENDING' and now.isBefore(o.acceptanceDeadline)}" method="post" th:action="@{/student/offers/{id}/respond(id=${o.id})}" data-confirm="Submit your final response to this offer?">
+<button class="btn btn-primary" name="accept" value="true">Accept offer</button> <button class="btn btn-outline-danger" name="accept" value="false">Decline</button>
+</form>
+<span th:if="${o.status.name() == 'PENDING' and !now.isBefore(o.acceptanceDeadline)}" class="tag">Response deadline passed</span>
+<a th:href="@{/applications/{id}(id=${o.application.id})}">View application →</a>
+</article>
+</div>
+<div class="panel empty" th:if="${#lists.isEmpty(offers)}">
+<i class="bi bi-award">
+</i>
+<h3>No offers yet</h3>
+<p>Placement offers will appear here once issued.</p>
+</div>
+</main>
+</html>

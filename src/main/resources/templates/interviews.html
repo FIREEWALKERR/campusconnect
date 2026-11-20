@@ -1,0 +1,41 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout('CampusConnect', ~{::main})}">
+<main>
+<div class="page-head">
+<div>
+<div class="eyebrow">BE READY FOR WHAT'S NEXT</div>
+<h1>Interview schedule</h1>
+<p>All timestamps below are in UTC. Schedule forms use <span th:text="${timeZone}">
+</span>.</p>
+</div>
+</div>
+<div class="job-grid">
+<article class="job-card" th:each="i:${interviews}">
+<span class="tag blue align-self-start" th:text="${i.status}">
+</span>
+<h3 th:text="${i.application.job.title}">
+</h3>
+<p class="small" th:text="${i.application.student.user.fullName}+' · '+${i.application.job.company.name}">
+</p>
+<strong th:text="'Round '+${i.roundNumber}+' · '+${i.type}">
+</strong>
+<p th:text="${i.scheduledAt}">
+</p>
+<p class="prose" th:text="${i.location}">
+</p>
+<p class="small prose" th:text="${i.instructions}">
+</p>
+<form th:if="${manager and i.status.name() == 'SCHEDULED'}" method="post" th:action="@{/interviews/{id}/status(id=${i.id})}">
+<button class="btn btn-sm btn-outline-primary" name="status" value="COMPLETED">Complete</button> <button class="btn btn-sm btn-outline-danger" name="status" value="CANCELLED">Cancel</button>
+</form>
+<a th:href="@{/applications/{id}(id=${i.application.id})}">View application →</a>
+</article>
+</div>
+<div class="panel empty" th:if="${#lists.isEmpty(interviews)}">
+<i class="bi bi-calendar2-week">
+</i>
+<h3>No interviews yet</h3>
+<p>Interview schedules appear here as recruitment progresses.</p>
+</div>
+</main>
+</html>
